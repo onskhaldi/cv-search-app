@@ -1,63 +1,62 @@
-# AI CV Assistant
+# CV Search App
 
-AI CV Assistant is a web application that allows users to upload a CV in PDF format and ask natural language questions about the candidate's profile.
+A local, privacy-friendly web application for uploading PDF CVs and asking questions about their content.
+
+The app extracts text from a PDF CV, detects common CV sections, builds a local semantic search index, and returns short structured answers based only on the uploaded document.
+
+## Screenshot
+
+![CV Search App Demo](docs/screenshots/cv-search-app-demo.png)
+
+## Overview
+
+CV Search App is a local portfolio project that demonstrates document processing, semantic search, and structured information extraction from PDF CVs.
+
+Instead of sending CV content to an external language model API, the application processes the document locally. It uses PDF text extraction, section-aware parsing, local embeddings, and structured extraction to answer questions about the uploaded CV.
 
 ## Features
 
-* Upload PDF resumes
-* Automatic text extraction
-* Document chunking
-* Retrieval-based search
-* Question answering over CV content
-* Modern web interface built with HTML, CSS, and JavaScript
-* FastAPI backend
+- Upload PDF CVs locally
+- Extract text from PDF files using PyMuPDF
+- Detect common CV sections such as work experience, education, projects, skills, tools, and languages
+- Build a local semantic search index with Sentence Transformers
+- Return short, structured answers based on the uploaded CV
+- Show evidence/context for answers
+- Delete uploaded PDF files after indexing
+- No OpenAI API
+- No external LLM API
+- No API keys required
+- Docker support
+- Simple web interface built with HTML, CSS, and JavaScript
+
+## Tech Stack
+
+- Python
+- FastAPI
+- PyMuPDF
+- Sentence Transformers
+- NumPy
+- Docker
+- HTML
+- CSS
+- JavaScript
+
+## How It Works
+
+1. The user uploads a PDF CV locally.
+2. The backend extracts text from the PDF using PyMuPDF.
+3. The extracted text is cleaned and split into CV-specific sections.
+4. Local embeddings are created with Sentence Transformers.
+5. The user asks a natural-language question.
+6. The app retrieves relevant CV sections and applies structured extraction.
+7. A short answer is returned based only on the uploaded CV.
+8. The uploaded PDF file is deleted after indexing.
 
 ## Example Questions
 
-* What work experience does this candidate have?
-* What projects are mentioned in the CV?
-* What programming languages does the candidate know?
-* What tools and technologies are listed?
-* What education does the candidate have?
-
-## Technology Stack
-
-* Python
-* FastAPI
-* Scikit-Learn
-* HTML
-* CSS
-* JavaScript
-
-## Project Structure
-
 ```text
-app/
-├── main.py
-├── pdf_reader.py
-├── chunker.py
-├── vector_store.py
-├── rag.py
-└── static/
-    └── index.html
-```
-
-## Author
-
-Ones Khaldi
-
-## License
-
-© 2026 Ones Khaldi. All rights reserved.
-<img width="627" height="563" alt="Screenshot 2026-06-16 at 2 21 42 AM" src="https://github.com/user-attachments/assets/8aa3fae9-128c-4e65-b6f9-2161e80f9c57" />
-
-## Privacy
-
-This project is intended as a portfolio/demo application.
-
-- Upload only test or sample CVs.
-- Uploaded PDF files are processed temporarily.
-- Uploaded files are deleted after indexing.
-- CV content is not sent to external AI APIs.
-- No OpenAI API key or external LLM API is used.
-- Do not upload sensitive personal documents to the public demo.
+What work experience does this candidate have?
+What education does this candidate have?
+What projects are mentioned in this CV?
+What tools and technologies does this candidate know?
+What languages does this candidate speak?
