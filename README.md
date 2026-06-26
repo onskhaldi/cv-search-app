@@ -288,3 +288,33 @@ CV Search App is a local semantic search project for PDF CVs. It demonstrates PD
 ## License
 
 This project is intended for educational and portfolio use.
+
+---
+
+## Testing
+
+![Tests](https://github.com/onskhaldi/cv-search-app/actions/workflows/test.yml/badge.svg)
+
+The project includes a pytest test suite covering the core CV search pipeline.
+
+### Run locally
+
+```bash
+python -m pip install -r requirements.txt
+python -m pip install pytest
+python -m pytest -v
+```
+
+### Current test coverage
+
+| Module | What is tested |
+|---|---|
+| `chunker.py` | Empty input, whitespace-only input, section headers, multiple sections, long section splitting, chunk-size behavior, return types |
+| `vector_store.py` | Empty index, index building, result structure, numeric scores, relevance, `top_k` limits, index rebuild behavior, multilingual query expansion |
+| `pdf_reader.py` | Missing file handling, non-PDF input validation, documented fixture-based edge cases |
+
+### Known limitations documented in tests
+
+- Scanned/image-based PDFs return no machine-readable text because OCR is not implemented.
+- Real fixture-based PDF tests are skipped until a sample CV PDF is added under `tests/fixtures/`.
+- The vector-store unit tests use a deterministic fake embedding model to avoid slow or flaky model downloads in CI.
