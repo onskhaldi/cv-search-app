@@ -1,17 +1,42 @@
+"""
+Tests for app.chunker.
+
+These tests verify the basic behavior of the CV chunking logic:
+- empty input handling
+- section-based chunk creation
+- long-section splitting
+- chunk size behavior
+- return type consistency
+"""
+
 from app.chunker import chunk_text
 
 
 def test_empty_string_returns_empty_list():
+    """
+    An empty string should not produce any chunks.
+    """
+
     result = chunk_text("", chunk_size=650, overlap=0)
+
     assert result == []
 
 
 def test_whitespace_only_returns_empty_list():
+    """
+    Text containing only spaces or newlines should not produce any chunks.
+    """
+
     result = chunk_text("   \n\n   ", chunk_size=650, overlap=0)
+
     assert result == []
 
 
 def test_short_text_produces_at_least_one_chunk():
+    """
+    A short CV section should produce at least one chunk.
+    """
+
     text = "SKILLS\nPython, SQL, Docker"
 
     result = chunk_text(text, chunk_size=650, overlap=0)
@@ -21,6 +46,13 @@ def test_short_text_produces_at_least_one_chunk():
 
 
 def test_chunk_contains_section_header():
+    """
+    The generated chunk should keep the section information.
+
+    This helps the retrieval system understand that the content belongs
+    to a specific CV section such as skills, education, or experience.
+    """
+
     text = "SKILLS\nPython SQL Docker Kubernetes"
 
     result = chunk_text(text, chunk_size=650, overlap=0)
@@ -29,6 +61,10 @@ def test_chunk_contains_section_header():
 
 
 def test_multiple_sections_chunked():
+    """
+    Text containing multiple CV sections should still be chunked successfully.
+    """
+
     text = (
         "EXPERIENCE\nWorked at TechCorp as a developer for 3 years.\n"
         "EDUCATION\nBachelor of Computer Science, University of Essen.\n"
@@ -41,6 +77,10 @@ def test_multiple_sections_chunked():
 
 
 def test_long_section_is_split_into_multiple_chunks():
+    """
+    A long CV section should be split into multiple smaller chunks.
+    """
+
     long_content = "Python. " * 200
     text = f"SKILLS\n{long_content}"
 
@@ -50,6 +90,13 @@ def test_long_section_is_split_into_multiple_chunks():
 
 
 def test_chunks_do_not_exceed_reasonable_size():
+    """
+    Chunks should not become extremely large.
+
+    The assertion allows some extra length because each chunk also contains
+    a section label such as 'SECTION: EDUCATION'.
+    """
+
     long_content = "word " * 500
     text = f"EDUCATION\n{long_content}"
 
@@ -60,6 +107,11 @@ def test_chunks_do_not_exceed_reasonable_size():
 
 
 def test_smaller_chunk_size_produces_more_chunks():
+    """
+    A smaller chunk size should produce at least as many chunks as a larger
+    chunk size.
+    """
+
     long_content = "experience word " * 100
     text = f"EXPERIENCE\n{long_content}"
 
@@ -70,10 +122,16 @@ def test_smaller_chunk_size_produces_more_chunks():
 
 
 def test_returns_list_of_strings():
+    """
+    chunk_text should always return a list where every item is a string.
+    """
+
     text = "SKILLS\nPython SQL"
 
     result = chunk_text(text, chunk_size=650, overlap=0)
 
     assert isinstance(result, list)
+
     for chunk in result:
         assert isinstance(chunk, str)
+        
